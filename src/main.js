@@ -3,8 +3,8 @@ import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 
 import VueRouter from 'vue-router'
-import Home from "./components/Home"
-import Tasks from "./components/Tasks"
+import Home from "./components/pages/Home"
+import Tasks from "./components/pages/Tasks"
 
 Vue.use(BootstrapVue)
 Vue.use(VueRouter);
