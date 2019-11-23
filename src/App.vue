@@ -1,14 +1,6 @@
 <template>
   <div id="app">
-    <div id="navbar">
-      <b-navbar type="dark" variant="dark">
-        <b-navbar-nav>
-          <b-nav-item href="/">Home</b-nav-item>
-          <b-nav-item href="/tasks">Tasks</b-nav-item>
-        </b-navbar-nav>
-      </b-navbar>
-    </div>
-    <router-view></router-view>
+    <img src="./assets/logo.png" />
   </div>
 </template>
 
