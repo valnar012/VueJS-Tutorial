@@ -1,12 +1,21 @@
 <template>
   <div id="app">
-    <h1 v-once>{{ title }}</h1>
-    <a v-bind:href="link">
-      <img src="./assets/logo.png" />
-    </a>
-    {{ showTitle()}}
-    <hr />
-    <p v-html="finishedLink"></p>
+    <div id="exercise">
+      <!-- 1) Fill the <p> below with your Name and Age - using Interpolation -->
+      <p>VueJS is pretty cool - {{name}}</p>
+      <!-- 2) Output your age, multiplied by 3 -->
+      <p>{{ age * 3}}</p>
+      <!-- 3) Call a function to output a random float between 0 and 1 (Math.random()) -->
+      <p>{{randomNumber()}}</p>
+      <!-- 4) Search any image on Google and output it here by binding the "src" attribute -->
+      <div>
+        <img v-bind:src="pictureLink" style="width:100px;height:100px" />
+      </div>
+      <!-- 5) Pre-Populate this input with your name (set the "value" attribute) -->
+      <div>
+        <input type="text" v-model="name" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,15 +23,14 @@
 export default {
   data() {
     return {
-      title: "Hello world",
-      link: "https://vuejs.org",
-      finishedLink: '<a href="https://vuejs.org"> VueJS</a>'
+      name: "Joe Doe",
+      age: 28,
+      pictureLink: "https://acdn.list25.com/wp-content/uploads/2016/09/24-5.jpg"
     };
   },
   methods: {
-    showTitle() {
-      this.title = "Hello";
-      return this.title;
+    randomNumber: function() {
+      return Math.random(1);
     }
   }
 };
