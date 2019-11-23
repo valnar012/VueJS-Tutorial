@@ -1,21 +1,21 @@
 <template>
   <div id="app">
-    <h1 v-once>{{ title }}</h1>
-    <a v-bind:href="link">
-      <img src="./assets/logo.png" />
-    </a>
-    <div>{{ showTitle("Hello")}}</div>
-    <hr />
-    <p v-html="finishedLink"></p>
-    <hr />
-    <button v-on:click="incrementCounter($event,2)">Click me</button>
-    <p>{{counter}}</p>
-    <p v-on:mousemove="setCoordinates">
-      Coordinates: {{x}} / {{y}}
-      -
-      <span v-on:mousemove.stop>DEAD SPOT</span>
-    </p>
-    <input type="text" v-on:keyup.enter="alertMe" />
+    <div id="exercise">
+      <!-- 1) Show an alert when the Button gets clicked -->
+      <div>
+        <button v-on:click="showAlert">Show Alert</button>
+      </div>
+      <!-- 2) Listen to the "keydown" event and store the value in a data property (hint: event.target.value gives you the value) -->
+      <div>
+        <input v-on:keyup="updateValue" type="text" />
+        <p>{{ value }}</p>
+      </div>
+      <!-- 3) Adjust the example from 2) to only fire if the "key down" is the ENTER key -->
+      <div>
+        <input v-on:keydown.enter="updateValue" type="text" />
+        <p>{{ value }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,28 +23,15 @@
 export default {
   data() {
     return {
-      title: "Hello world",
-      link: "https://vuejs.org",
-      finishedLink: '<a href="https://vuejs.org"> VueJS</a>',
-      counter: 0,
-      x: 0,
-      y: 0
+      value: ""
     };
   },
   methods: {
-    showTitle(data) {
-      this.title = data;
-      return this.title;
+    showAlert() {
+      alert("Show an alert when the Button gets clicked");
     },
-    incrementCounter(event, step = 1) {
-      this.counter += step;
-    },
-    setCoordinates: function(event) {
-      this.x = event.clientX;
-      this.y = event.clientY;
-    },
-    alertMe() {
-      alert("Why are you doing this?");
+    updateValue(event) {
+      this.value = event.target.value;
     }
   }
 };
