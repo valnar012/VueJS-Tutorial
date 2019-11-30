@@ -23,10 +23,20 @@
     <hr />
     <p>Counter: {{counter2}}</p>
     <p>Result: {{output}}</p>
+    <button v-on:click="counter2++">Increase</button>
     <button v-on:click="counter2--">Decrease</button>
     <hr />
     <button @click="changeLink">Click to change link</button>
     <a :href="link2">Link</a>
+    <hr />
+    <div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
+    <div class="demo" :class="{red:attachRed}"></div>
+    <div class="demo" :class="[color,{red:attachRed}]"></div>
+    <div class="demo" :style="myStyle"></div>
+    <div class="demo" :style="[myStyle,{height: width+'px'}]"></div>
+    <hr />
+    <input type="text" v-model="color" />
+    <input type="text" v-model="width" />
   </div>
 </template>
 
@@ -42,13 +52,28 @@ export default {
       counter: 0,
       counter2: 0,
       x: 0,
-      y: 0
+      y: 0,
+      attachRed: false,
+      color: "gray",
+      width: 100
     };
   },
   computed: {
     // Computed only gets executed when something changes
     output() {
       return this.counter2 > 5 ? "Greater than 5" : "Smaller or equal than 5";
+    },
+    divClasses() {
+      return {
+        red: this.attachRed,
+        blue: !this.attachRed
+      };
+    },
+    myStyle() {
+      return {
+        backgroundColor: this.color,
+        width: this.width + "px"
+      };
     }
   },
   watch: {
@@ -92,5 +117,25 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.demo {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-color: gray;
+  margin: 10px;
+}
+
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.blue {
+  background-color: blue;
 }
 </style>
