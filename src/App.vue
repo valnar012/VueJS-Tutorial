@@ -1,141 +1,118 @@
 <template>
   <div id="app">
-    <h1 v-once>{{ title }}</h1>
-    <a v-bind:href="link">
-      <img src="./assets/logo.png" />
-    </a>
-    <div>{{ showTitle("Hello")}}</div>
-    <hr />
-    <p v-html="finishedLink"></p>
-    <hr />
-    <button v-on:click="incrementCounter($event,2)">Click me</button>
-    <button v-on:click="counter++">Click me</button>
-    <p>{{counter * 2 > 10 ? 'Greater than 10' : 'Smaller or equal than 10'}}</p>
-    <p v-on:mousemove="setCoordinates">
-      Coordinates: {{x}} / {{y}}
-      -
-      <span v-on:mousemove.stop>DEAD SPOT</span>
-    </p>
-    <input type="text" v-on:keyup.enter="alertMe" />
-    <hr />
-    <input type="text" v-model="name" />
-    <p>{{name}}</p>
-    <hr />
-    <p>Counter: {{counter2}}</p>
-    <p>Result: {{output}}</p>
-    <button v-on:click="counter2++">Increase</button>
-    <button v-on:click="counter2--">Decrease</button>
-    <hr />
-    <button @click="changeLink">Click to change link</button>
-    <a :href="link2">Link</a>
-    <hr />
-    <div class="demo" @click="attachRed = !attachRed" :class="divClasses"></div>
-    <div class="demo" :class="{red:attachRed}"></div>
-    <div class="demo" :class="[color,{red:attachRed}]"></div>
-    <div class="demo" :style="myStyle"></div>
-    <div class="demo" :style="[myStyle,{height: width+'px'}]"></div>
-    <hr />
-    <input type="text" v-model="color" />
-    <input type="text" v-model="width" />
+    <!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
+    <div @load="animationLoader()">
+      <button @click="startEffect">Start Effect</button>
+      <div id="effect" :class="intervalClass"></div>
+    </div>
+    <!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
+    <div
+      :class="[noClass,{padding},{animation}]"
+      :style="{transform:'rotateY('+this.Y+'deg)'}"
+    >I got no class :(</div>
+    <!-- 3) Let the user enter a class (create some example classes) and attach it -->
+    <div>
+      <input type="text" v-model="input" />
+      <div :class="input"></div>
+    </div>
+    <!-- 4) Let the user enter a class and enter true/ false for another class (create some example classes) and attach the classes -->
+    <div>
+      <input type="text" />
+      <input type="text" />
+      <div></div>
+    </div>
+    <!-- 5) Repeat 3) but now with values for styles (instead of class names). Attach the respective styles.  -->
+    <div>
+      <input type="text" />
+      <div></div>
+    </div>
+    <!-- 6) Create a simple progress bar with setInterval and style bindings. Start it by hitting the below button. -->
+    <div>
+      <button>Start Progress</button>
+      <div></div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  created() {
+    let main = this;
+    setInterval(function() {
+      main.Y = main.Y + 1;
+      main.Y = main.Y % 360;
+    }, 5);
+  },
   data() {
     return {
-      title: "Hello world",
-      link: "https://vuejs.org",
-      link2: "https://vuejs.org",
-      finishedLink: '<a href="https://vuejs.org"> VueJS</a>',
-      name: "Joe",
-      counter: 0,
-      counter2: 0,
-      x: 0,
-      y: 0,
-      attachRed: false,
-      color: "gray",
-      width: 100
+      intervalSwitch: false,
+      padding: true,
+      animation: true,
+      input: "",
+      Y: 0
     };
   },
   computed: {
     // Computed only gets executed when something changes
-    output() {
-      return this.counter2 > 5 ? "Greater than 5" : "Smaller or equal than 5";
+    intervalClass() {
+      let intervalClass = "";
+      if (this.intervalSwitch) {
+        intervalClass = "shrink";
+      } else {
+        intervalClass = "highlight";
+      }
+      return intervalClass;
     },
-    divClasses() {
-      return {
-        red: this.attachRed,
-        blue: !this.attachRed
-      };
-    },
-    myStyle() {
-      return {
-        backgroundColor: this.color,
-        width: this.width + "px"
-      };
+    noClass() {
+      return { box: true, border: true };
     }
   },
   watch: {
     //Executes code upon data changes (Best practice)
     //Must run in sync
-    counter2() {
-      var vm = this;
-      setTimeout(function() {
-        vm.counter2 = 0;
-      }, 10000);
-    }
   },
   methods: {
     // Methods gets called everytime when dom gets updated
-    showTitle(data) {
-      this.title = data;
-      return this.title;
-    },
-    incrementCounter(event, step = 1) {
-      this.counter += step;
-    },
-    setCoordinates: function(event) {
-      this.x = event.clientX;
-      this.y = event.clientY;
-    },
-    alertMe() {
-      alert("Why are you doing this?");
-    },
-    changeLink() {
-      this.link2 = "http://google.com";
+    startEffect() {
+      let main = this;
+      setInterval(function() {
+        main.intervalSwitch = !main.intervalSwitch;
+      }, 2000);
     }
   }
 };
 </script>
 
 <style scoped>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-.demo {
+#effect {
   width: 100px;
   height: 100px;
-  display: inline-block;
-  background-color: gray;
-  margin: 10px;
+  border: 1px solid black;
 }
 
-.red {
+.highlight {
   background-color: red;
+  width: 200px !important;
 }
 
-.green {
-  background-color: green;
+.shrink {
+  background-color: gray;
+  width: 50px !important;
 }
 
-.blue {
-  background-color: blue;
+.box {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 10%;
+}
+
+.border {
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.padding {
+  padding: 15px;
 }
 </style>
